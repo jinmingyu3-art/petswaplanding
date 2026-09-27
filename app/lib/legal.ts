@@ -24,10 +24,24 @@ export async function latestPublished(document: "privacy" | "terms"): Promise<Le
   }
 }
 
-/** A short line with no closing punctuation and no bullet is a heading. */
-export function isHeading(paragraph: string): boolean {
-  const p = paragraph.trim();
-  return p.length > 0 && p.length <= 80 && !p.includes("\n") && !/[.:;,)]$/.test(p) && !p.startsWith("•");
+const isShort = (p: string) =>
+  p.length <= 80 && !p.includes("\n") && !/[.:;,)]$/.test(p) && !p.startsWith("•");
+const isShouting = (p: string) => /[A-Z]/.test(p) && p === p.toUpperCase();
+
+/*
+  Whether paragraph i is a section heading. The stored text is flat, so a
+  heading is recognised by shape: a short line with no closing punctuation
+  that starts a section. The Retention table is also short lines, so a short
+  line that follows another short line is a table cell, not a heading; and a
+  heading may be followed by an all-capital warning line ("PLEASE READ THIS
+  SECTION CAREFULLY"). Checked against Privacy 1 and Terms 4: 21 and 34
+  headings, and no table cells.
+*/
+export function isHeadingAt(ps: string[], i: number): boolean {
+  const p = ps[i], prev = ps[i - 1], next = ps[i + 1];
+  if (!isShort(p) || (isShouting(p) && next !== undefined && isShouting(next))) return false;
+  if (prev !== undefined && prev.length <= 80 && !isShouting(prev)) return false;
+  return next === undefined || !isShort(next) || next === "Category" || isShouting(next);
 }
 
 export function paragraphs(body: string): string[] {

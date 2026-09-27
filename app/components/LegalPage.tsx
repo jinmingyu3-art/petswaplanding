@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Footer from "./Footer";
-import { isHeading, paragraphs, type LegalDoc } from "../lib/legal";
+import { isHeadingAt, paragraphs, type LegalDoc } from "../lib/legal";
 
 export default function LegalPage({ title, doc }: { title: string; doc: LegalDoc | null }) {
   return (
@@ -15,8 +15,8 @@ export default function LegalPage({ title, doc }: { title: string; doc: LegalDoc
               {doc.effectiveDate ? `, effective ${new Date(doc.effectiveDate + "T12:00:00Z").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}` : ""}
             </p>
             <div className="mt-8 space-y-4 leading-relaxed">
-              {paragraphs(doc.body).map((p, i) =>
-                isHeading(p) ? (
+              {paragraphs(doc.body).map((p, i, all) =>
+                isHeadingAt(all, i) ? (
                   <h2 key={i} className="pt-4 text-xl font-semibold">{p}</h2>
                 ) : (
                   <p key={i} className="whitespace-pre-line">{p}</p>
