@@ -1,7 +1,8 @@
 "use client";
 
 import Script from "next/script";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { trackingAllowed } from "./privacyChoice";
 import { usePathname, useSearchParams } from "next/navigation";
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID!;
@@ -41,7 +42,11 @@ function MetaPixelRouteTracker() {
 }
 
 export default function MetaPixel() {
-  if (!PIXEL_ID) return null;
+  // Decided in the browser after it loads, because the server cannot see GPC
+  // or the visitor's choice. Nothing loads until then.
+  const [allowed, setAllowed] = useState(false);
+  useEffect(() => setAllowed(trackingAllowed()), []);
+  if (!PIXEL_ID || !allowed) return null;
 
   return (
     <>
@@ -59,16 +64,8 @@ export default function MetaPixel() {
         `}
       </Script>
 
-      <noscript>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          height="1"
-          width="1"
-          style={{ display: "none" }}
-          src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`}
-          alt=""
-        />
-      </noscript>
+      {/* No <noscript> image: it fired for every visitor with scripts off,
+          whatever they had chosen, so it could not respect an opt-out. */}
 
       {/* This satisfies the lint rule everywhere, including /404 */}
       <Suspense fallback={null}>
