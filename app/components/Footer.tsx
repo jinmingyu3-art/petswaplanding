@@ -1,3 +1,5 @@
+import PrivacyChoices from "./PrivacyChoices";
+
 export default function Footer() {
   return (
     <footer className="py-8 text-muted">
@@ -10,6 +12,7 @@ export default function Footer() {
           <a href="#" className="text-brand-dark hover:underline">
             Terms
           </a> */}
+          <PrivacyChoices />
           <a href="mailto:thepetswap@gmail.com" className="text-brand-dark hover:underline">
             Contact Us
           </a>
