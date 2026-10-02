@@ -54,7 +54,7 @@ const Waitlist = z.object({
   petType: z.enum(["Dog", "Cat", "Other"], { message: "Choose a pet type." }),
   other: z.string().max(100).optional().nullable(),
   referral: z.string().max(200, "Please use 200 characters or fewer.").optional().nullable(),
-  hp: z.string().max(0).optional(),
+  hp: z.string().optional(),
 }).superRefine((data, ctx) => {
   if (data.petType === "Other" && !data.other) {
     ctx.addIssue({
@@ -92,7 +92,7 @@ export async function joinWaitlist(
     petType: formData.get("petType"),
     other: formData.get("other"),
     referral: formData.get("referral") || null,
-    hp: formData.get("website") || "",
+    hp: String(formData.get("pswp_leave_empty") || ""),
   };
 
   const parsed = Waitlist.safeParse(data);
@@ -105,7 +105,15 @@ export async function joinWaitlist(
     };
   }
   // bot: silently accept
-  if (parsed.data.hp) return { ok: true, message: "Thanks! (bot check)" };
+  /*
+    Filled in by a bot, which is told it worked and saved nowhere. Logged, so
+    a run of these is visible in Vercel's logs rather than looking like a
+    quiet day (#225).
+  */
+  if (parsed.data.hp) {
+    console.warn("waitlist: hidden field filled, not saved", { length: parsed.data.hp.length });
+    return { ok: true, message: "You\u2019re on the list! We\u2019ll email you when your city goes live." };
+  }
 
   try {
     const userAgent = (formData.get("userAgent") as string) || null;
@@ -121,6 +129,7 @@ export async function joinWaitlist(
     });
 
     if (answer === "already_on_list") {
+      console.info("waitlist: already on the list");
       return {
         ok: false,
         message: "That email is already on the waitlist.",
@@ -131,12 +140,16 @@ export async function joinWaitlist(
     // The database checks the same things zod does, so this is a field zod
     // let through and the database did not, such as a malformed address.
     if (answer === "invalid") {
+      console.info("waitlist: refused by the database as invalid");
       return {
         ok: false,
         message: "Please fix the highlighted fields and try again.",
       };
     }
 
+    // One line per saved signup and per refusal, so Vercel's logs show the
+    // form working on a day nobody signs up as clearly as on a busy one (#225).
+    console.info("waitlist: added");
     return {
       ok: true,
       message: "You’re on the list! We’ll email you when your city goes live.",
