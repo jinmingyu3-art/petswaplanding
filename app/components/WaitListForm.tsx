@@ -63,14 +63,18 @@ export default function WaitlistForm() {
 
           <form action={formAction} className="mt-6 grid max-w-lg gap-4">
             {/* Honeypot & metadata */}
+            {/*
+              A name no browser autofills. It was "website", which a browser or
+              password manager can fill for a real person, and that person was
+              then refused or silently dropped (#225, 2 October).
+            */}
             <input
               type="text"
-              name="website"
+              name="pswp_leave_empty"
               tabIndex={-1}
-              autoComplete="off"
+              autoComplete="one-time-code"
+              aria-hidden="true"
               className="hidden"
-              title="Leave this field blank"
-              placeholder="Leave this field blank"
             />
             <input
               type="hidden"
