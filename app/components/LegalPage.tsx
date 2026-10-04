@@ -27,7 +27,7 @@ export default function LegalPage({ title, doc }: { title: string; doc: LegalDoc
         ) : (
           <p className="mt-6">
             This page could not be loaded just now. Please try again, or email{" "}
-            <a href="mailto:thepetswap@gmail.com" className="text-brand-dark hover:underline">thepetswap@gmail.com</a>.
+            <a href="mailto:support@thepetswap.com" className="text-brand-dark hover:underline">support@thepetswap.com</a>.
           </p>
         )}
       </div>
