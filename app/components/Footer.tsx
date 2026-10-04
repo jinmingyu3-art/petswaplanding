@@ -12,8 +12,11 @@ export default function Footer() {
           <a href="/terms" className="text-brand-dark hover:underline">
             Terms
           </a>
+          <a href="/support" className="text-brand-dark hover:underline">
+            Support
+          </a>
           <PrivacyChoices />
-          <a href="mailto:thepetswap@gmail.com" className="text-brand-dark hover:underline">
+          <a href="mailto:support@thepetswap.com" className="text-brand-dark hover:underline">
             Contact Us
           </a>
         </nav>
