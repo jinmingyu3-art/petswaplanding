@@ -69,6 +69,11 @@ export default function SupportPage() {
             stopping you. You can download a copy of your data from the same screen. If you cannot open the app,
             email us from the address on your account and we will help.
           </p>
+          <p className="mt-2">
+            See{" "}
+            <Link href="/delete-account" className="text-brand-dark hover:underline">what we delete and what we keep</Link>
+            {" "}when you delete your account.
+          </p>
         </section>
 
         <section className="mt-8">
