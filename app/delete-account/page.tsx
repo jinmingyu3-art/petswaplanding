@@ -4,8 +4,9 @@ import Footer from "../components/Footer";
 
 // Google Play asks for an account deletion URL that works without the app:
 // it must name the app, give the steps, and say what is deleted, what is kept
-// and for how long. Every retention line below is one the Privacy Policy 1.0
-// already makes (its Retention table and its Account Deletion section), and
+// and for how long. Every retention line below is one the Privacy Policy
+// already makes (its Retention table and its Account Deletion section, which
+// are word for word the same in 1.0 and 1.4), and
 // "what we delete" was checked against the foreign keys delete_my_account
 // cascades through. Change the Policy and this page together.
 
