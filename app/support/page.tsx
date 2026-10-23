@@ -17,15 +17,36 @@ export default function SupportPage() {
         <h1 className="mt-6 text-3xl font-bold">Support</h1>
 
         <section className="mt-8 rounded-lg border-2 border-red-600 p-4">
-          <h2 className="text-xl font-semibold">In an emergency</h2>
+          <h2 className="text-xl font-semibold">Emergencies</h2>
+          {/* The same line the app's Contact Support draws (petswap-community#236). */}
           <p className="mt-2">
-            If a person is in danger, call 911. If a pet is hurt or ill, call a vet or an emergency animal hospital
-            straight away.
+            In an emergency, call 911. If a pet needs urgent medical care, call a veterinarian.
           </p>
           <p className="mt-2">
-            ThePetSwap is not an emergency service. We cannot send help, and email is not checked around the clock.
+            ThePetSwap is not an emergency service. We cannot send help, and we only answer during support hours.
             During a swap, the Emergency page in the app has the pet&apos;s vet and emergency contacts.
           </p>
+        </section>
+
+        {/*
+          Julia on petswap-community#236, 23 October: support hours, and different
+          wording for urgent safety reports and general questions. Her sentences,
+          word for word, and her hours in the app's clock ("8 AM–10 PM"), so the
+          site and the app read the same. Nothing here may promise a faster or
+          round-the-clock reply.
+        */}
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold">Support hours</h2>
+          <p className="mt-2">Every day, 8 AM–10 PM Pacific.</p>
+          <ul className="mt-2 list-disc space-y-1 pl-6">
+            <li>
+              <strong>Safety reports:</strong> We prioritize urgent safety reports and respond as soon as possible
+              during support hours.
+            </li>
+            <li>
+              <strong>General questions:</strong> We usually respond within 1–2 business days.
+            </li>
+          </ul>
         </section>
 
         <section className="mt-8">
